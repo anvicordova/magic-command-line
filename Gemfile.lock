@@ -55,7 +55,6 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
-  x86_64-darwin-20
 
 DEPENDENCIES
   activerecord
@@ -65,4 +64,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   2.2.20
+   2.3.7
