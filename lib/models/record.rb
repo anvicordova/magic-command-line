@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../db/connection'
 
 Connection.new.connect

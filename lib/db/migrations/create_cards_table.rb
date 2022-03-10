@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_record'
 require_relative '../connection'
 
@@ -16,8 +18,6 @@ class CreateCardsTable < ActiveRecord::Migration[5.2]
   end
 
   def down
-    if ActiveRecord::Base.connection.table_exists?(:cards)
-      drop_table :cards
-    end
+    drop_table :cards if ActiveRecord::Base.connection.table_exists?(:cards)
   end
 end

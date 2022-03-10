@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Rakefile
 require 'active_record'
 

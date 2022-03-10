@@ -1,6 +1,12 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 gem 'activerecord'
-gem 'pry-byebug'
 gem 'faraday'
+gem 'pry-byebug'
 gem 'sqlite3'
+
+group :development do
+  gem 'rubocop'
+end
