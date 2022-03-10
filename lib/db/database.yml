@@ -1,3 +1,12 @@
 # database.yaml
-adapter: 'sqlite3'
-database: 'magic.db'
+development:
+  adapter: sqlite3
+  database: magic_development.db
+  pool: 5
+  timeout: 5000
+
+test:
+  adapter: sqlite3
+  database: magic_test.db
+  pool: 5
+  timeout: 5000

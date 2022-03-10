@@ -1,1 +1,6 @@
 magic.db
+magic_development.db
+magic_test.db
+.env
+.env.development
+.env.test

@@ -6,6 +6,7 @@ gem 'activerecord'
 gem 'faraday'
 gem 'pry-byebug'
 gem 'sqlite3'
+gem 'dotenv'
 
 group :development do
   gem 'rubocop'
