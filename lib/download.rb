@@ -1,6 +1,8 @@
 require 'json'
+require 'pry'
 require_relative 'http_client'
 require_relative 'models/card'
+require_relative 'models/color'
 
 def cards  
   deck = []
@@ -8,7 +10,7 @@ def cards
 
   thread_pool = 20
 
-  33.times do |i|
+  1.times do |i|
     thread_pool.times.map do |page|
       Thread.new(deck, i, page, thread_pool) do |deck|
         mutex.synchronize do
@@ -23,7 +25,17 @@ def cards
           cards = body[:cards]
 
           cards.each do |card|
-            Card.create(name: card[:name])
+            new_card = Card.create(
+              name: card[:name],
+              set: card[:set],
+              rarity: card[:rarity]
+            )
+            
+            if card[:colors]
+              card[:colors].each do |c|
+                new_card.colors << Color.find_or_create_by(name: c)
+              end
+            end
           end
 
           if cards.nil? || cards.empty?
