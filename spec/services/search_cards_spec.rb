@@ -92,4 +92,42 @@ RSpec.describe SearchCards do
       expect(subject).to match_array(valid_card)
     end
   end
+
+  describe 'group cards by set' do
+    let(:options) do
+      { groups: [:set] }
+    end
+
+    let!(:card_2xm) { create(:card, set: '2XM') }
+    let!(:card_ktk) { create(:card, set: 'KTK') }
+
+    it 'returns the cards grouped by set' do
+      expect(subject).to include(
+        {
+          ['2XM'] => [card_2xm],
+          ['KTK'] => [card_ktk]
+        }
+      )
+    end
+  end
+
+  describe 'group cards by set and rarity' do
+    let(:options) do
+      { groups: [:set, :rarity] }
+    end
+
+    let!(:card_2xm_common) { create_list(:card, 2, set: '2XM', rarity: "Common") }
+    let!(:card_ktk_uncommon) { create_list(:card, 3, set: 'KTK', rarity: "Uncommon") }
+    let!(:card_ktk_common) { create_list(:card, 2, set: 'KTK', rarity: "Common") }
+
+    it 'returns the cards grouped by set and rarity within each set' do
+      expect(subject).to include(
+        {
+          ['2XM', 'Common'] => card_2xm_common,
+          ["KTK", "Common"] => card_ktk_common,
+          ["KTK", "Uncommon"] => card_ktk_uncommon
+        }
+      )
+    end
+  end
 end
