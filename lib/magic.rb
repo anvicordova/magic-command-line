@@ -32,5 +32,17 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-puts @options
-SearchCards.new(@options).call
+results = SearchCards.new(@options).call
+
+if @options[:groups]
+  results.each do |k, v|
+    puts "GROUP: #{k.join(' - ')}"
+    puts 'CARDS'
+    puts v.pluck(:name).join("\n").to_s
+    puts '-------------------'
+  end
+else
+  puts "Cards"
+  puts '-------------------'
+  puts results.pluck(:name)
+end
