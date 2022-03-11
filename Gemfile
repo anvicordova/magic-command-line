@@ -8,6 +8,11 @@ gem 'pry-byebug'
 gem 'sqlite3'
 gem 'dotenv'
 
+group :development, :test do
+  gem 'factory_bot'
+  gem 'faker'
+end
+
 group :development do
   gem 'rubocop'
 end
