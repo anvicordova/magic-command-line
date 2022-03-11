@@ -7,6 +7,7 @@ require 'pry'
 # This should be the first call in order to mantain the correct environment
 require 'dotenv'
 Dotenv.load('.env.test')
+require 'database_cleaner/active_record'
 require 'faker'
 require "factory_bot"
 
@@ -17,6 +18,17 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     FactoryBot.find_definitions
+  end
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 
   # rspec-expectations config goes here. You can use an alternate
