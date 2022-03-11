@@ -38,6 +38,7 @@ class SearchCards
 
     puts @scope.to_sql
     puts @scope.pluck(:name)
+    @scope
   end
 
   private
