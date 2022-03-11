@@ -3,10 +3,10 @@
 source 'https://rubygems.org'
 
 gem 'activerecord'
+gem 'dotenv'
 gem 'faraday'
 gem 'pry-byebug'
 gem 'sqlite3'
-gem 'dotenv'
 
 group :development, :test do
   gem 'factory_bot'
@@ -18,6 +18,6 @@ group :development do
 end
 
 group :test do
-  gem 'rspec'
   gem 'database_cleaner-active_record'
+  gem 'rspec'
 end

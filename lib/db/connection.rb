@@ -13,7 +13,7 @@ class Connection
   end
 
   def connect
-    env =  ENV["APP_ENVIRONMENT"]
+    env = ENV['APP_ENVIRONMENT']
     ActiveRecord::Base.establish_connection(@db_config[env])
   end
 end
