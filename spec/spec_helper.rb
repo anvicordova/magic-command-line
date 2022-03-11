@@ -12,6 +12,11 @@ require 'faker'
 require "factory_bot"
 
 
+require_relative '../lib/models/record'
+require_relative '../lib/models/card'
+require_relative '../lib/models/color'
+require_relative '../lib/services/search_cards'
+
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
