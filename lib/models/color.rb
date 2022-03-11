@@ -3,5 +3,6 @@
 require_relative 'record'
 
 class Color < Record
-  has_and_belongs_to_many :cards
+  has_many :cards_colors, dependent: :destroy
+  has_many :cards, through: :cards_colors
 end

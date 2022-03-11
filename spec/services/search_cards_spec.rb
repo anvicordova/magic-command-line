@@ -47,19 +47,24 @@ RSpec.describe SearchCards do
 
       let(:blue) { create(:color, name: 'Blue') }
       let(:white) { create(:color, name: 'White') }
+      let(:green) { create(:color, name: 'Green') }
 
       let!(:valid_card) { create(:card) }
+      let!(:more_than_two_colors) { create(:card) }
       let!(:blue_only_card) { create(:card) }
       let!(:white_only_card) { create(:card) }
 
       before do
         valid_card.colors << blue
         valid_card.colors << white
+        more_than_two_colors.colors << blue
+        more_than_two_colors.colors << white
+        more_than_two_colors.colors << green
         blue_only_card.colors << blue
         white_only_card.colors << white
       end
 
-      it 'returns the cards with that have the two colors' do
+      it 'returns the cards that ONLY have the two colors' do
         expect(subject).to match_array(valid_card)
       end
     end

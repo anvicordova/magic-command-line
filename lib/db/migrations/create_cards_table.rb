@@ -12,6 +12,7 @@ class CreateCardsTable < ActiveRecord::Migration[5.2]
         table.string :name
         table.string :set
         table.string :rarity
+        table.integer :colors_count
         table.timestamps
       end
     end

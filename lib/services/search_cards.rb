@@ -39,6 +39,7 @@ class SearchCards
     @scope
       .joins(:colors)
       .where(colors: { name: filter_colors })
+      .where(cards: { colors_count: filter_colors.length })
       .group('cards.id')
       .having('COUNT(cards.id) = ?', filter_colors.length)
   end
