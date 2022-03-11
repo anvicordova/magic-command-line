@@ -113,21 +113,46 @@ RSpec.describe SearchCards do
 
   describe 'group cards by set and rarity' do
     let(:options) do
-      { groups: [:set, :rarity] }
+      { groups: %i[set rarity] }
     end
 
-    let!(:card_2xm_common) { create_list(:card, 2, set: '2XM', rarity: "Common") }
-    let!(:card_ktk_uncommon) { create_list(:card, 3, set: 'KTK', rarity: "Uncommon") }
-    let!(:card_ktk_common) { create_list(:card, 2, set: 'KTK', rarity: "Common") }
+    let!(:card_2xm_common) { create_list(:card, 2, set: '2XM', rarity: 'Common') }
+    let!(:card_ktk_uncommon) { create_list(:card, 3, set: 'KTK', rarity: 'Uncommon') }
+    let!(:card_ktk_common) { create_list(:card, 2, set: 'KTK', rarity: 'Common') }
 
     it 'returns the cards grouped by set and rarity within each set' do
       expect(subject).to include(
         {
-          ['2XM', 'Common'] => card_2xm_common,
-          ["KTK", "Common"] => card_ktk_common,
-          ["KTK", "Uncommon"] => card_ktk_uncommon
+          %w[2XM Common] => card_2xm_common,
+          %w[KTK Common] => card_ktk_common,
+          %w[KTK Uncommon] => card_ktk_uncommon
         }
       )
+    end
+  end
+
+  describe 'pagination' do
+    let(:options) do
+      { filter_set: '2XM' }
+    end
+
+    let!(:valid_cards) { create_list(:card, 23, set: '2XM') }
+
+    it 'returns the first page results' do
+      expect(subject).to match_array(valid_cards.first(10))
+    end
+
+    describe 'requesting the second page' do
+      let(:options) do
+        {
+          filter_set: '2XM',
+          page: 2
+        }
+      end
+
+      it 'returns the second page results' do
+        expect(subject).to match_array(valid_cards.drop(10).first(10))
+      end
     end
   end
 end

@@ -42,7 +42,7 @@ if @options[:groups]
     puts '-------------------'
   end
 else
-  puts "Cards"
+  puts 'Cards'
   puts '-------------------'
   puts results.pluck(:name)
 end

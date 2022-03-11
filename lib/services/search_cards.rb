@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'pry'
+require 'kaminari'
 require_relative '../models/card'
 require_relative '../models/color'
 
@@ -11,6 +12,7 @@ class SearchCards
     @groups = options[:groups]
     @filter_set = options[:filter_set]
     @filter_colors = options[:filter_colors]
+    @page = options[:page]
     @scope = Card.all
   end
 
@@ -21,13 +23,16 @@ class SearchCards
 
     return group_cards if groups
 
-    @scope
+    @scope.page(@page)
   end
 
   private
 
   def group_cards
-    @scope.order(groups).group_by { |card| groups.map { |g| card.send(g) } }
+    @scope
+      .order(groups)
+      .page(@page)
+      .group_by { |card| groups.map { |g| card.send(g) } }
   end
 
   def filter_by_color

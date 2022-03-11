@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'activerecord'
 gem 'dotenv'
 gem 'faraday'
+gem 'kaminari'
 gem 'pry-byebug'
 gem 'sqlite3'
 
