@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'dotenv'
+Dotenv.load('.env.development')
+
 require 'optparse'
 require_relative 'services/search_cards'
 
