@@ -5,6 +5,7 @@ Dotenv.load('.env.development')
 
 require 'optparse'
 require_relative 'services/search_cards'
+require_relative 'services/download_cards_service'
 
 # magic -g set
 # magic -g set,rarity
@@ -15,6 +16,10 @@ require_relative 'services/search_cards'
 }
 
 OptionParser.new do |opts|
+  opts.on('-d', '--download', 'Downloads the cards from the API') do
+    @options[:download] = true
+  end
+
   opts.on('-gKEYS', '--group-by=KEYS', 'Group results by property') do |keys|
     @options[:groups] = keys.split(',').map(&:to_sym)
   end
@@ -32,9 +37,11 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-results = SearchCards.new(@options).call
+if @options[:download]
+  DownloadCardsService.new.fetch_and_save_cards
+elsif @options[:groups]
+  results = SearchCards.new(@options).call
 
-if @options[:groups]
   results.each do |k, v|
     puts "GROUP: #{k.join(' - ')}"
     puts 'CARDS'
@@ -42,6 +49,8 @@ if @options[:groups]
     puts '-------------------'
   end
 else
+  results = SearchCards.new(@options).call
+
   puts 'Cards'
   puts '-------------------'
   puts results.pluck(:name)
