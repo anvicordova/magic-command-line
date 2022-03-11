@@ -2,7 +2,7 @@
 
 class CreateColorsTable < ActiveRecord::Migration[5.2]
   def up
-    unless ActiveRecord::Base.connection.table_exists?(:colors)
+    unless ActiveRecord::Base.connection.table_exists?(:colors) # rubocop:disable Style/GuardClause
       create_table :colors do |table|
         table.string :name
         table.timestamps

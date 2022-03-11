@@ -7,7 +7,7 @@ Connection.new.connect
 
 class CreateCardsTable < ActiveRecord::Migration[5.2]
   def up
-    unless ActiveRecord::Base.connection.table_exists?(:cards)
+    unless ActiveRecord::Base.connection.table_exists?(:cards) # rubocop:disable Style/GuardClause
       create_table :cards do |table|
         table.string :name
         table.string :set
