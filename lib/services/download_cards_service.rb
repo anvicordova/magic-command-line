@@ -4,6 +4,7 @@ require 'json'
 require 'pry'
 require_relative 'http_client'
 require_relative '../models/card'
+require_relative '../models/cards_color'
 require_relative '../models/color'
 
 class DownloadCardsService
