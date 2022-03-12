@@ -26,6 +26,13 @@ chmod 755 start
 ./magic -h
 ```
 
+5. Run tests with 
+
+```
+rspec
+```
+
+
 ## Magic command line options
 
 You can use the following command line options to interact with this application

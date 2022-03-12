@@ -40,16 +40,16 @@ OptionParser.new do |opts|
     @options[:page] = page.to_i
   end
 
-  opts.on("-h", "--help", "Prints this help") do
+  opts.on('-h', '--help', 'Prints this help') do
     puts opts
     exit
   end
 end.parse!
 
 if @options[:download]
-  puts "Downloading ..."
+  puts 'Downloading ...'
   CardsDownloader.new.download!
-  puts "Download completed."
+  puts 'Download completed.'
 elsif @options[:groups]
   results = SearchCards.new(@options).call
 

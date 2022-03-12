@@ -25,15 +25,15 @@ class SearchCards
     return grouped_cards if groups
 
     result = @scope.page(@page)
-    SearchResult.new(data: result , total_pages: result.total_pages)
+    SearchResult.new(data: result, total_pages: result.total_pages)
   end
 
   private
 
   def grouped_cards
     sorted_data = @scope
-      .order(groups)
-      .page(@page)
+                  .order(groups)
+                  .page(@page)
 
     SearchResult.new(
       data: sorted_data.group_by { |card| groups.map { |g| card.send(g) } },

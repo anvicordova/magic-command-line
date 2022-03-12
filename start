@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'rake'
 
-puts "Welcome!"
-puts "Creating environment files"
+puts 'Welcome!'
+puts 'Creating environment files'
 puts "Done!\n\n"
 
-File.write('.env.development', "APP_ENVIRONMENT=development")
-File.write('.env.test', "APP_ENVIRONMENT=test")
+File.write('.env.development', 'APP_ENVIRONMENT=development')
+File.write('.env.test', 'APP_ENVIRONMENT=test')
 
 puts "Creating database for development environment\n"
 system('APP_ENVIRONMENT=development rake migrate:setup')
@@ -17,9 +18,9 @@ puts "Creating database for test environment\n"
 system('APP_ENVIRONMENT=test rake migrate:setup')
 puts "Done!\n\n"
 
-puts "Giving permissions to app"
+puts 'Giving permissions to app'
 system('chmod 755 magic')
 
-puts "You are all set!!"
+puts 'You are all set!!'
 
-puts "Run ./magic --help to see what you can do"
+puts 'Run ./magic --help to see what you can do'
