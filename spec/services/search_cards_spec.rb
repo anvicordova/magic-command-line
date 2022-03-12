@@ -14,7 +14,7 @@ RSpec.describe SearchCards do
     let!(:invalid_card) { create(:card, set: 'KTK') }
 
     it 'returns the cards with the given set' do
-      expect(subject).to match_array(valid_card)
+      expect(subject.data).to match_array(valid_card)
     end
   end
 
@@ -36,7 +36,7 @@ RSpec.describe SearchCards do
       end
 
       it 'returns the cards with the given color' do
-        expect(subject).to match_array(valid_card)
+        expect(subject.data).to match_array(valid_card)
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe SearchCards do
       end
 
       it 'returns the cards that ONLY have the two colors' do
-        expect(subject).to match_array(valid_card)
+        expect(subject.data).to match_array(valid_card)
       end
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe SearchCards do
     end
 
     it 'returns the cards with the valid set and colors' do
-      expect(subject).to match_array(valid_card)
+      expect(subject.data).to match_array(valid_card)
     end
   end
 
@@ -107,7 +107,7 @@ RSpec.describe SearchCards do
     let!(:card_ktk) { create(:card, set: 'KTK') }
 
     it 'returns the cards grouped by set' do
-      expect(subject).to include(
+      expect(subject.data).to include(
         {
           ['2XM'] => [card_2xm],
           ['KTK'] => [card_ktk]
@@ -126,7 +126,7 @@ RSpec.describe SearchCards do
     let!(:card_ktk_common) { create_list(:card, 2, set: 'KTK', rarity: 'Common') }
 
     it 'returns the cards grouped by set and rarity within each set' do
-      expect(subject).to include(
+      expect(subject.data).to include(
         {
           %w[2XM Common] => card_2xm_common,
           %w[KTK Common] => card_ktk_common,
@@ -144,7 +144,7 @@ RSpec.describe SearchCards do
     let!(:valid_cards) { create_list(:card, 23, set: '2XM') }
 
     it 'returns the first page results' do
-      expect(subject).to match_array(valid_cards.first(10))
+      expect(subject.data).to match_array(valid_cards.first(10))
     end
 
     describe 'requesting the second page' do
@@ -156,7 +156,7 @@ RSpec.describe SearchCards do
       end
 
       it 'returns the second page results' do
-        expect(subject).to match_array(valid_cards.drop(10).first(10))
+        expect(subject.data).to match_array(valid_cards.drop(10).first(10))
       end
     end
   end

@@ -8,52 +8,64 @@ require 'optparse'
 require_relative 'lib/services/search_cards'
 require_relative 'lib/services/cards_downloader'
 
-# ./magic -g -d
+# ./magic -d
 # ./magic -g set
 # ./magic -g set,rarity
 # ./magic -s KTK -c Blue,Red
+# ./magic -s 2XM
+# ./magic -s 2XM -p 23
 
 @options = {
   page: 1
 }
 
 OptionParser.new do |opts|
-  opts.on('-d', '--download', 'Downloads the cards from the API') do
+  opts.on('-d', '--download', 'Download the cards from the API') do
     @options[:download] = true
   end
 
-  opts.on('-gKEYS', '--group-by=KEYS', 'Group results by property') do |keys|
+  opts.on('-g', '--group-by p1,p2', 'Group results by property (set or rarity)') do |keys|
     @options[:groups] = keys.split(',').map(&:to_sym)
   end
 
-  opts.on('-sSET', '--set=SET', 'Filter results by set') do |set|
+  opts.on('-s', '--set setKey', 'Filter results by set key. Ex: KTK') do |set|
     @options[:filter_set] = set
   end
 
-  opts.on('-cCOLORS', '--color=COLORS', 'Filter results by colors') do |colors|
+  opts.on('-c', '--color c1,c2', 'Filter results by colors (capitalized: Red,Blue)') do |colors|
     @options[:filter_colors] = colors.split(',')
   end
 
-  opts.on('-pNUMBER', '--page=NUMBER', 'Show this page for the results') do |page|
+  opts.on('-p', '--page number', 'Show this page for the results. Default 1') do |page|
     @options[:page] = page.to_i
+  end
+
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
   end
 end.parse!
 
 if @options[:download]
+  puts "Downloading ..."
   CardsDownloader.new.download!
+  puts "Download completed."
 elsif @options[:groups]
   results = SearchCards.new(@options).call
 
-  results.each do |k, v|
+  results.data.each do |k, v|
     puts "GROUP: #{k.join(' - ')}"
     puts 'CARDS'
     puts v.pluck(:name).join("\n").to_s
     puts '-------------------'
+    puts "Results for page #{@options[:page]} of #{results.total_pages}"
   end
 else
   results = SearchCards.new(@options).call
 
   puts 'Cards'
   puts '-------------------'
-  puts results.pluck(:name)
+  puts results.data.pluck(:name)
+  puts '-------------------'
+  puts "Results for page #{@options[:page]} of #{results.total_pages}"
 end

@@ -4,6 +4,7 @@ require 'pry'
 require 'kaminari'
 require_relative '../models/card'
 require_relative '../models/color'
+require_relative '../models/search_result'
 
 class SearchCards
   attr_accessor :groups, :filter_set, :filter_colors, :scope
@@ -21,18 +22,23 @@ class SearchCards
 
     @scope = filter_by_color if filter_colors
 
-    return group_cards if groups
+    return grouped_cards if groups
 
-    @scope.page(@page)
+    result = @scope.page(@page)
+    SearchResult.new(data: result , total_pages: result.total_pages)
   end
 
   private
 
-  def group_cards
-    @scope
+  def grouped_cards
+    sorted_data = @scope
       .order(groups)
       .page(@page)
-      .group_by { |card| groups.map { |g| card.send(g) } }
+
+    SearchResult.new(
+      data: sorted_data.group_by { |card| groups.map { |g| card.send(g) } },
+      total_pages: sorted_data.total_pages
+    )
   end
 
   def filter_by_color
