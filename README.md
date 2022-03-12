@@ -2,31 +2,38 @@
 
 ## Setup
 
-1. In your terminal, give executable permissions to `start`
+1. Install and run `bundle`
+
+```
+gem install bundle
+bundle
+```
+
+2. In your terminal, give executable permissions to `start`
 
 ```
 chmod 755 start
 ```
 
-2. Execute `start` file
+3. Execute `start` file
 
 ```
 ./start
 ```
 
-3. It is recommended to download data first
+4. It is recommended to download data first
 
 ```
 ./magic -d
 ```
 
-4. Otherwise you can see other options with
+5. Otherwise you can see other options with
 
 ```
 ./magic -h
 ```
 
-5. Run tests with 
+6. Run tests with rspec
 
 ```
 rspec
