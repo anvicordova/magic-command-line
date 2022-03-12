@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'rake'
+
+puts "Welcome!"
+puts "Creating environment files"
+puts "Done!\n\n"
+
+File.write('.env.development', "APP_ENVIRONMENT=development")
+File.write('.env.test', "APP_ENVIRONMENT=test")
+
+puts "Creating database for development environment\n"
+system('APP_ENVIRONMENT=development rake migrate:setup')
+puts "Done!\n\n"
+
+puts "Creating database for test environment\n"
+system('APP_ENVIRONMENT=test rake migrate:setup')
+puts "Done!\n\n"
