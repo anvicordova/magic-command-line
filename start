@@ -22,4 +22,4 @@ system('chmod 755 magic')
 
 puts "You are all set!!"
 
-puts "Run ./magic --help to see what you can doo"
+puts "Run ./magic --help to see what you can do"
