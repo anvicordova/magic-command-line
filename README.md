@@ -1,32 +1,95 @@
-# Backend coding exercise
+# MAGIC COMMAND LINE TOOL
 
-For this coding exercise you will use the public API provided by https://magicthegathering.io to build a command line tool that can query and filter Magic The Gathering cards.
+## Setup
 
-## The exercise
+1. In your terminal, give executable permissions to `start`
 
-Using **only** the https://api.magicthegathering.io/v1/cards endpoint and **without using any query parameters for filtering**, create a command-line tool that can be used by one of our engineers to query, filter, and group cards. Ensure that your tool can be used to return the following example lists:
+```
+chmod 755 start
+```
 
-* A list of **Cards** grouped by **`set`**.
-* A list of **Cards** grouped by **`set`** and within each **`set`** grouped by **`rarity`**.
-* A list of cards from the  **Khans of Tarkir (KTK)** set that ONLY have the colours `red` **AND** `blue`
+2. Execute `start` file
 
-Once you've finished coding, spend some time adding a section to this README explaining how you approached the problem: initial analysis, technical choices, trade-offs, etc.
+```
+./start
+```
 
-## Environment
+3. It is recommended to download data first
 
-* You can use any one of the following programming languages: Ruby, Elixir, JavaScript, Crystal, Python, Go. We want to see you at your best, so use the language you're most comfortable with.
-* If you introduce any dependencies outside of your programming language's standard library, document why you added them in this README.
+```
+./magic -d
+```
 
-## Limitations
+4. Otherwise you can see other options with
 
-* You are **not** allowed to use a third-party library that wraps the MTG API.
-* You can only use the https://api.magicthegathering.io/v1/cards endpoint for fetching all the cards. You **can't use query parameters** to filter the cards.
+```
+./magic -h
+```
 
-## What we look for
+## Magic command line options
 
-* Organise your code with low coupling and high cohesion.
-* Avoid unnecessary abstractions. Make it readable, not vague.
-* Name things well. We know _naming things_ is one of the two hardest problems in programming, so try to not make your solution too cryptic or too clever. Avoid the use of [weasel words](https://gist.github.com/tmcw/35849b7e9b86bb0c125972b2bb275bc7).
-* Adhere to your language/framework conventions. No need to get _too_ creative.
-* Take a pragmatic approach to testing. Just make sure the basics are covered.
-* Take your time. We set no time limit, so simply let us know roughly how much time you spent. By our estimate, it should take roughly 4 hours. It's not an issue if you go over this but PLEASE do not spend more than 6 hours on it.
+You can use the following command line options to interact with this application
+
+```
+ -d, --download                   Download the cards from the API
+ -g, --group-by p1,p2             Group results by property (set or rarity)
+ -s, --set setKey                 Filter results by set key. Ex: KTK
+ -c, --color c1,c2                Filter results by colors (capitalized: Red,Blue)
+ -p, --page number                Show this page for the results. Default 1
+ -h, --help                       Prints this help
+```
+ Examples:
+
+```
+./magic -d
+./magic -g set
+./magic -g set,rarity
+./magic -s KTK -c Blue,Red
+./magic -s 2XM
+./magic -s 2XM -p 23
+```
+
+## Utilities
+
+If you want to explore the local db. You can use the following in your terminal:
+
+```
+APP_ENVIRONMENT=development irb -r ./lib/models/color.rb -r ./lib/models/card.rb -r ./lib/models/cards_color.rb
+```
+
+Then you can explore the content, similar to `rails c`. Ex:
+
+```
+Card.count
+```
+
+## Implementation Notes
+
+To download the data, I decided to handle the requests using threads to in order to parallelize the work a bit instead of doing it sequentially. The data is kept in memory and then is saved into a local db. All this process is handled in the `CardsDownloader`service. Data fetching is handled with `CardsFetcher` that uses a generic `HttpClient`to consume the API.
+
+The database I'm using is sqlite, I think the flat file format was enough for this challenge. There are some drawbacks about using this database that, for example it doesn't support multithread connections, that's why the data had to be stored in bulk once all the fetching of the API was completed. The service `CardsImporter` is the one responsible for this job.
+
+The database schema consist of three tables: `Cards`, `Colors` and `Cards_Colors`. Each of these tables has their respective model in `models`directory. Currently, only the fields required in the challenge are supported: set, rarity, colors.To interact with the database I decided to use ActiveRecord and follow a pattern similar to rails.
+
+All the process for searching and grouping cards is done once the data is downloaded with the service `SearchCards`. Decided to include a single service for all the operations required in the challenge. But I think this can evolve a bit and separate the concerns about grouping and filtering. But for the time being I think it works ok.
+
+
+## About dependencies
+
+| Gem      | Use |
+| ----------- | ----------- |
+|`activerecord`| ORM to interact with the database|
+|`dotenv`| Manage environment variables|
+|`faraday`| Handle http requests|
+|`faraday-retry`| Handle retries and errors with faraday|
+|`kaminari`| Paginate models |
+|`pry-byebug`| Debug|
+|`sqlite3`| Database|
+|`factory_bot`| Testing. Mock data|
+|`faker`| Testing. Mock data|
+|`rubocop`| Linter|
+|`database_cleaner-active_record`| Testing. Clean data between test runs|
+|`rspec`| Testing|
+|`vcr`| Testing. Mock http requests |
+|`webmock`|Testing. Mock http requests|
+
