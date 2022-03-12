@@ -1,6 +1,14 @@
+AllCops:
+    NewCops: enable
+    Exclude:
+    - 'spec/fixtures/deck.rb'
+
 Style/Documentation:
   Enabled: false
 
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
+
+Style/OpenStructUse:
+  Enabled: false

@@ -7,15 +7,30 @@ require 'pry'
 # This should be the first call in order to mantain the correct environment
 require 'dotenv'
 Dotenv.load('.env.test')
+
 require 'database_cleaner/active_record'
 require 'faker'
 require 'factory_bot'
+require 'vcr'
+require 'webmock/rspec'
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/vcr'
+  c.hook_into :webmock
+  c.configure_rspec_metadata!
+  c.ignore_localhost = true
+end
+
+WebMock.disable_net_connect!(allow_localhost: true)
 
 require_relative '../lib/models/record'
 require_relative '../lib/models/card'
 require_relative '../lib/models/color'
 require_relative '../lib/models/cards_color'
 require_relative '../lib/services/search_cards'
+require_relative '../lib/services/cards_downloader'
+require_relative '../lib/services/cards_fetcher'
+require_relative '../lib/services/cards_importer'
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods

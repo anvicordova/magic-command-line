@@ -7,6 +7,8 @@ class CreateColorsTable < ActiveRecord::Migration[5.2]
         table.string :name
         table.timestamps
       end
+
+      add_index :colors, :name, unique: true
     end
   end
 

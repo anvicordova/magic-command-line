@@ -22,4 +22,6 @@ end
 group :test do
   gem 'database_cleaner-active_record'
   gem 'rspec'
+  gem 'vcr'
+  gem 'webmock'
 end

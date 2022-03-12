@@ -5,7 +5,7 @@ Dotenv.load('.env.development')
 
 require 'optparse'
 require_relative 'services/search_cards'
-require_relative 'services/download_cards_service'
+require_relative 'services/cards_downloader'
 
 # magic -g set
 # magic -g set,rarity
@@ -38,7 +38,7 @@ OptionParser.new do |opts|
 end.parse!
 
 if @options[:download]
-  DownloadCardsService.new.fetch_and_save_cards
+  CardsDownloader.new.download!
 elsif @options[:groups]
   results = SearchCards.new(@options).call
 
