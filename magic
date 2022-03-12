@@ -1,15 +1,17 @@
+#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require 'dotenv'
 Dotenv.load('.env.development')
 
 require 'optparse'
-require_relative 'services/search_cards'
-require_relative 'services/cards_downloader'
+require_relative 'lib/services/search_cards'
+require_relative 'lib/services/cards_downloader'
 
-# magic -g set
-# magic -g set,rarity
-# magic -s KTK -c blue,red
+# ./magic -g -d
+# ./magic -g set
+# ./magic -g set,rarity
+# ./magic -s KTK -c Blue,Red
 
 @options = {
   page: 1

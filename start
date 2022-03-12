@@ -16,3 +16,6 @@ puts "Done!\n\n"
 puts "Creating database for test environment\n"
 system('APP_ENVIRONMENT=test rake migrate:setup')
 puts "Done!\n\n"
+
+puts "Giving permissions to app"
+system('chmod 755 magic')
